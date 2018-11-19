@@ -37,7 +37,7 @@
             <h4>Generally speaking, you rely more on your experience than your imagination.</h4>
 
             <select class="btn-secondary" id="q1" name="options">
-                <option value="" disabled selected >select an option</option>
+                <option value="" disabled selected>select an option</option>
                 <option value=1>1(Stongly disagree</option>
                 <option value=2>2</option>
                 <option value=3>3</option>
@@ -132,7 +132,7 @@
             <h3>Question 7 </h3>
             <h4>In a discussion, truth should be more important than people’s sensitivities.</h4>
 
-            <select  class="btn-secondary " id="q7" name="options">
+            <select class="btn-secondary " id="q7" name="options">
                 <option value="" disabled selected aria-placeholder="select an option">select an option </option>
                 <option value=1>1(Stongly disagree</option>
                 <option value=2>2</option>
@@ -197,76 +197,91 @@
             <button class="btn btn-primary btn-lg btn-block submit">Submit</button>
         </div>
 
-        <div>
-            <h3 id="userMatchName"> </h3>
-            <img src="" alt="" id="userMatchPhoto">
+        <!-- Modal -->
+        <div class="modal fade" id="modalResult" tabindex="-1" 
+            aria-hidden="true">
+            <div class="modal-dialog" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Best Match</h5>    
+                    </div>
+                    <div class="modal-body">
+                        <h2 id="match-name"></h2>
+                        <img id="match-img" src="" alt="No image found" style="max-width: 350px ; max-height: 200px" >
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
+
+
+    <script type="text/javascript">
+        // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
+        // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
+        // Our api recognizes the route (/api/friends)... and then runs the associated code (found in api-routes.js).
+
+        $(".submit").on("click", function (event) {
+            event.preventDefault();
+
+            // Here we grab the form elements
+            var userInput = {
+                name: $("#name").val().trim(),
+                photo: $("#photo").val().trim(),
+                scores: [
+                    $("#q1").val().trim(),
+                    $("#q2").val().trim(),
+                    $("#q3").val().trim(),
+                    $("#q4").val().trim(),
+                    $("#q5").val().trim(),
+                    $("#q6").val().trim(),
+                    $("#q7").val().trim(),
+                    $("#q8").val().trim(),
+                    $("#q9").val().trim(),
+                    $("#q10").val().trim(),
+
+                ]
+            };
+            console.log("you clicked me")
+           ;
+
+            // add user input to friends list
+            $.post("/api/friends", userInput,function (data) {
+                
+                      // console.log(JSON.stringify(userInput))
+                     console.log(" the user input is " + JSON.stringify(userInput) )
+                     // Grab the result from the AJAX post so that the best match's name and photo are displayed.
+                     $("#match-name").text(data.name);
+                    $("#match-img").attr("src", data.photo);
+                     console.log(data.name)
+                     console.log(data.photo)
+                    // opens up the modal
+                   $("#modalResult").modal("toggle");
+                 
+                 // Clear the form when submitting
+		    	$("#name").val("");
+		    	$("#photo").val("");
+		    	$("#q1").val("");
+		    	$("#q2").val("");
+		    	$("#q3").val("");
+		    	$("#q4").val("");
+		    	$("#q5").val("");
+		    	$("#q6").val("");
+		    	$("#q7").val("");
+		    	$("#q8").val("");
+		    	$("#q9").val("");
+		    	$("#q10").val("");
+
+                            
+                })
+               
+        });
+
+
+    </script>
 </body>
 
 </html>
-
-<!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
-<script type="text/javascript">
-    // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
-    // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
-    // Our api recognizes the route (/api/friends)... and then runs the associated code (found in api-routes.js).
-
-    $(".submit").on("click", function (event) {
-        event.preventDefault();
-
-        // Here we grab the form elements
-        var userInput = {
-            name: $("#name").val().trim(),
-            photo: $("#photo").val().trim(),
-            scores: [
-                $("#q1").val().trim(),
-                $("#q2").val().trim(),
-                $("#q3").val().trim(),
-                $("#q4").val().trim(),
-                $("#q5").val().trim(),
-                $("#q6").val().trim(),
-                $("#q7").val().trim(),
-                $("#q8").val().trim(),
-                $("#q9").val().trim(),
-                $("#q10").val().trim(),
-
-            ]
-        };
-        console.log("you clicked me")
-        console.log(JSON.stringify(userInput));
-
-        // add new friend info into friends list
-        $.post("/api/friends", userInput,
-            function (data) {
-
-
-                // clear the form
-                $("#name").val("");
-                $("#photo").val("");
-
-                $("#q1").val("");
-                $("#q2").val("");
-                $("#q3").val("");
-                $("#q4").val("");
-                $("#q5").val("");
-                $("#q6").val("");
-                $("#q7").val("");
-                $("#q8").val("");
-                $("#q9").val("");
-                $("#q10").val("");
-
-            })
-            .done(function (response) {
-                console.log("new friend posted")
-
-                $("#userMatchName").html(response.userName);
-                $("#userMatchPhoto").attr( "src", response.userPhoto);
-
-            })
-
-    });
-
-
-</script>

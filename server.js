@@ -4,7 +4,7 @@
 // ==============================================================================
 
 var express = require("express");
-
+var path = require('path');
 // Tells node that we are creating an "express" server
 var app = express();
 
@@ -15,7 +15,8 @@ var PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
+// Expose the public directory to access CSS files
+app.use(express.static(path.join(__dirname, './app/public')));
   // ================================================================================
 // ROUTER
 // The below points our server to a series of "route" files.
