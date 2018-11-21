@@ -34,7 +34,7 @@
 
         <div>
             <h3>Question 1 </h3>
-            <h4>Generally speaking, you rely more on your experience than your imagination.</h4>
+            <h4>You find it difficult to introduce yourself to other people.</h4>
 
             <select class="btn-secondary valid" id="q1" name="options">
                 <option value="" disabled selected>select an option</option>
@@ -50,7 +50,7 @@
 
         <div>
             <h3>Question 2 </h3>
-            <h4>Your mind is always buzzing with unexplored ideas and plans.</h4>
+            <h4>You find it easy to stay relaxed even when there is some pressure.</h4>
 
             <select class="btn-secondary valid" id="q2" name="options">
                 <option value="" disabled selected aria-placeholder="select an option">select an option </option>
@@ -82,7 +82,7 @@
 
         <div>
             <h3>Question 4 </h3>
-            <h4>You rarely do something just out of sheer curiosity.</h4>
+            <h4>You do not usually initiate conversations.</h4>
 
             <select class="btn-secondary valid" id="q4" name="options">
                 <option value="" disabled selected aria-placeholder="select an option">select an option </option>
@@ -114,7 +114,7 @@
 
         <div>
             <h3>Question 6 </h3>
-            <h4>It is often difficult for you to relate to other people’s feelings.</h4>
+            <h4>You are usually highly motivated and energetic.</h4>
 
             <select class="btn-secondary valid" id="q6" name="options">
                 <option value="" disabled selected aria-placeholder="select an option">select an option </option>
@@ -130,7 +130,7 @@
 
         <div>
             <h3>Question 7 </h3>
-            <h4>In a discussion, truth should be more important than people’s sensitivities.</h4>
+            <h4>You often feel as if you have to justify yourself to other people.</h4>
 
             <select class="btn-secondary valid" id="q7" name="options">
                 <option value="" disabled selected aria-placeholder="select an option">select an option </option>
@@ -146,7 +146,7 @@
 
         <div>
             <h3>Question 8 </h3>
-            <h4>You rarely get carried away by fantasies and ideas.</h4>
+            <h4>Your home and work environments are quite tidy.</h4>
 
             <select class="btn-secondary valid" id="q8" name="options">
                 <option value="" disabled selected aria-placeholder="select an option">select an option </option>
@@ -179,7 +179,7 @@
 
         <div>
             <h3>Question 10 </h3>
-            <h4>You feel more energetic after spending time with a group of people.</h4>
+            <h4>You consider yourself more practical than creative.</h4>
 
             <select class="btn-secondary valid" id="q10" name="options">
                 <option value="" disabled selected aria-placeholder="select an option">select an option </option>
@@ -222,35 +222,11 @@
         // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
         // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
         // Our api recognizes the route (/api/friends)... and then runs the associated code (found in api-routes.js).
-
-        $(".submit").on("click", function (event) {
-            event.preventDefault();
-
-            var isValid = false
-            validiate();
-
-            function validiate() {
-
-                $(".valid option").each(function () {
-                    if ($(this).val() === "") {
-                        alert("You need to answer all question");
-                        return isValid
-
-                    } else { return isValid = true }
-                });
-
-                $(".valid").each(function () {
-                    if ($(this).val() === "") {
-                        alert("You need to answer all question");
-                        return isValid
-
-                    } else { return isValid = true }
-
-                })
+        $(document).ready(function () {
 
 
-                if (isValid === true) {
-
+            $(".submit").on("click", function (event) {
+                event.preventDefault();
 
 
                     // Here we grab the form elements
@@ -273,10 +249,6 @@
                     };
 
 
-
-
-
-
                     // add user input to friends list
                     $.post("/api/friends", userInput, function (data) {
 
@@ -285,35 +257,31 @@
                         // Grab the result from the AJAX post so that the best match's name and photo are displayed.
                         $("#match-name").text(data.name);
                         $("#match-img").attr("src", data.photo);
+                    });
 
-                        // opens up the modal
-                        $("#modalResult").modal("toggle");
+                    // opens up the modal
+                    $("#modalResult").modal("toggle");
 
-                        //  console.log(data.name)
-                        //  console.log(data.photo)
+                    //  console.log(data.name)
+                    //  console.log(data.photo)
 
-
-
-                        // Clear the form after submitting
-                        $("#name").val("");
-                        $("#photo").val("");
-                        $("#q1").val("");
-                        $("#q2").val("");
-                        $("#q3").val("");
-                        $("#q4").val("");
-                        $("#q5").val("");
-                        $("#q6").val("");
-                        $("#q7").val("");
-                        $("#q8").val("");
-                        $("#q9").val("");
-                        $("#q10").val("");
+                    // Clear the form after submitting
+                    $("#name").val("");
+                    $("#photo").val("");
+                    $("#q1").val("");
+                    $("#q2").val("");
+                    $("#q3").val("");
+                    $("#q4").val("");
+                    $("#q5").val("");
+                    $("#q6").val("");
+                    $("#q7").val("");
+                    $("#q8").val("");
+                    $("#q9").val("");
+                    $("#q10").val("");
 
 
-                    })
-                }
-            }
+            });
         });
-
 
     </script>
 </body>
